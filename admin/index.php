@@ -1,4 +1,6 @@
-<?php include "includes/header.php"; ?>
+<?php
+    include "includes/adminHeader.php";
+?>
 
 <body>
 
@@ -6,7 +8,7 @@
 
     <!--Navigation-->
     <?php
-    include "includes/navigation.php";
+    include "includes/adminNavigation.php";
     ?>
 
     <div id="page-wrapper">
