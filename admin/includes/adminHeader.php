@@ -1,7 +1,7 @@
 <?php
-    ob_start();
-    include "../includes/db.php";
-    include "includes/adminFunctions.php";
+ob_start();
+include "../includes/db.php";
+include "includes/adminFunctions.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -2,6 +2,10 @@
 
 if (isset($_POST['submit'])) {
     addCategories();
+} else if (isset($_GET['delete'])) {
+    deleteCategory();
+} else if (isset($_POST['update'])) {
+    editCategory();
 }
 
 ?>
@@ -26,7 +30,7 @@ if (isset($_POST['submit'])) {
                         Welcome to admin panel
                         <small>Subheading</small>
                     </h1>
-
+                    <!--Add categories form-->
                     <div class="col-xs-6">
                         <form action="" method="post">
                             <div class="form-group">
@@ -38,31 +42,56 @@ if (isset($_POST['submit'])) {
                             </div>
                         </form>
                     </div>
+
+                    <!--Show categories table-->
                     <div class="col-xs-6">
                         <table class="table table-hover">
                             <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>Category Title</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody>
                             <?php
-                            global $connection;
-                            $query = "SELECT * FROM  categories";
-                            $allCategories = mysqli_query($connection, $query);
+                            $allCategories = returnCategories();
                             while ($row = mysqli_fetch_assoc($allCategories)) {
-                                $id = $row['cat_id'];
+                                $catId = $row['cat_id'];
                                 $catTitle = $row['cat_title'];
                                 ?>
                                 <tr>
-                                    <td><?php echo $id ?></td>
+                                    <td><?php echo $catId ?></td>
                                     <td><?php echo $catTitle ?></td>
+                                    <td>
+                                        <div class="col-xs-6">
+                                            <a href="categories.php?delete=<?php echo $catId ?>"><i
+                                                        class="fa fa-close"></i></a>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <a href="categories.php?edit=<?php echo $catId ?>"><i
+                                                        class="fa fa-edit"></i></a>
+                                        </div>
+                                    </td>
                                 </tr>
-                            <?php }
+                                <?php
+                            }
                             ?>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="col-xs-6">
+                        <form action="" method="post">
+                            <div class="form-group">
+                                <label for="catTitleEdit">Edit Category</label>
+                                <input class="form-control" type="text" name="catTitleEdit"
+                                       value="<?php if (isset($_GET['edit'])) echo returnCategoryTitle(); ?>">
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" type="submit" name="update" value="Edit Category">
+                            </div>
+                        </form>
                     </div>
 
                 </div>
