@@ -1,4 +1,6 @@
 <?php
+
+/*Categories functions*/
 function addCategories()
 {
     global $connection;
@@ -66,4 +68,42 @@ function returnCategories()
     } else {
         return $result;
     }
+}
+
+/*Posts functions*/
+
+function showPosts($query)
+{
+    global $connection;
+    $allPosts = mysqli_query($connection, $query);
+    if(!$allPosts)
+    {
+        die("Query showing posts has failed:".mysqli_error($connection));
+    }
+    while($row = mysqli_fetch_assoc($allPosts))
+    {
+//        $sortedRow = [$row['post_id'], $row['post_author'],$row['post_category_id'],$row['post_status'],$row['post_image'],$row['post_tags'],$row['post_comment_count'],$row['post_date']];
+        $postId = $row['post_id'];
+        $postAuthor = $row['post_author'];
+        $postTitle = $row['post_title'];
+        $postCategoryId = $row['post_category_id'];
+        $postStatus = $row['post_status'];
+        $postImage = $row['post_image'];
+        $postTags = $row['post_tags'];
+        $post_comment_count = $row['post_comment_count'];
+        $postDate = $row['post_date'];
+
+        echo "<tr>";
+        echo "<td>{$postId}</td>";
+        echo "<td>{$postAuthor}</td>";
+        echo "<td>{$postTitle}</td>";
+        echo "<td>{$postCategoryId}</td>";
+        echo "<td>{$postStatus}</td>";
+        echo "<td><img src='../images/{$postImage}' class='img-responsive' alt='category image' style='width: 100px;'></td>";
+        echo "<td>{$postTags}</td>";
+        echo "<td>{$post_comment_count}</td>";
+        echo "<td>{$postDate}</td>";
+        echo "</tr>";
+    }
+
 }
