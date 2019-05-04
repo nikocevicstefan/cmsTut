@@ -25,27 +25,23 @@ include "includes/adminHeader.php";
                 </div>
             </div>
             <!--Posts table-->
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Category</th>
-                    <th>Status</th>
-                    <th>Image</th>
-                    <th>Tags</th>
-                    <th>Comments</th>
-                    <th>Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                  $query = "SELECT * FROM posts";
-                  $allPost = showPosts($query);
-                ?>
-                </tbody>
-            </table>
+            <?php
+            if (isset($_GET['source'])) {
+                $source = $_GET['source'];
+            } else {
+                $source = '';
+            }
+
+            switch ($source) {
+                case 'add_post';
+                    include "includes/addPost.php";
+                    break;
+
+                default:
+                    include "includes/viewAllPosts.php";
+                    break;
+            }
+            ?>
 
         </div>
         <!-- /.container-fluid -->

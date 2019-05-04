@@ -76,12 +76,10 @@ function showPosts($query)
 {
     global $connection;
     $allPosts = mysqli_query($connection, $query);
-    if(!$allPosts)
-    {
-        die("Query showing posts has failed:".mysqli_error($connection));
+    if (!$allPosts) {
+        die("Query showing posts has failed:" . mysqli_error($connection));
     }
-    while($row = mysqli_fetch_assoc($allPosts))
-    {
+    while ($row = mysqli_fetch_assoc($allPosts)) {
 //        $sortedRow = [$row['post_id'], $row['post_author'],$row['post_category_id'],$row['post_status'],$row['post_image'],$row['post_tags'],$row['post_comment_count'],$row['post_date']];
         $postId = $row['post_id'];
         $postAuthor = $row['post_author'];
@@ -103,7 +101,50 @@ function showPosts($query)
         echo "<td>{$postTags}</td>";
         echo "<td>{$post_comment_count}</td>";
         echo "<td>{$postDate}</td>";
+        echo "<td><a href='posts.php?delete=$postId'><i class='fa fa-close'></i></a></td>";
         echo "</tr>";
     }
 
+}
+
+function createPost()
+{
+    global $connection;
+    $postAuthor = $_POST['postAuthor'];
+    $postTitle = $_POST['postTitle'];
+    $postCategoryId = $_POST['postCategoryId'];
+    $postStatus = $_POST['postStatus'];
+
+    $postImage = $_FILES['postImage']['name'];
+    $postImageTemp = $_FILES['postImage']['tmp_name'];
+
+    $postTags = $_POST['postTags'];
+    $postCommentCount = 4;
+    $postContent = $_POST['postContent'];
+    $postDate = date('d-m-y');
+
+    /*moving image from the temporary location to our storage*/
+    move_uploaded_file($postImageTemp, "../images/$postImage");
+
+    $query = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_comment_count, post_status) 
+              VALUES({$postCategoryId},'{$postTitle}','{$postAuthor}', now() ,'{$postImage}','{$postContent}','{$postTags}' , {$postCommentCount},'{$postStatus}')";
+    $result = mysqli_query($connection, $query);
+    if(!$result)
+    {
+        die("Post creation failed:".mysqli_error($connection));
+    }
+}
+
+function deletePost($id)
+{
+        global $connection;
+        $query = "DELETE FROM posts WHERE post_id = $id";
+        $result = mysqli_query($connection, $query);
+        if(!$result)
+        {
+            die("Delete Query failed:".mysqli_error($connection));
+        }else
+            {
+                header("Location: posts.php");
+            }
 }
