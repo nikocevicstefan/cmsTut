@@ -43,6 +43,9 @@ include "includes/functions.php";
                 //if search is activated
                 $search = $_POST['search'];
                 $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%'";
+            } else if (isset($_GET['category'])) {
+                $catId = $_GET['category'];
+                $query = "SELECT * FROM posts WHERE post_category_id = $catId";
             } else {
                 //show all posts
                 $query = "SELECT * FROM posts";

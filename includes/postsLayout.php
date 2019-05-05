@@ -1,6 +1,6 @@
 <!--Receives variables from index.php-->
 <h2>
-    <a href="#"><?php echo "{$postTitle}"; ?></a>
+    <a href="post.php?p_id=<?php echo $postId;?>"><?php echo "{$postTitle}"; ?></a>
 </h2>
 <p class="lead">
     by <a href="index.php"><?php echo "{$postAuthor}" ?></a>

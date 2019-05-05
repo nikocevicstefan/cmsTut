@@ -10,6 +10,7 @@ function showPosts($query)
     }
     while($row = mysqli_fetch_assoc($allPosts))
     {
+        $postId = $row['post_id'];
         $postTitle = $row['post_title'];
         $postAuthor = $row['post_author'];
         $postDate = $row['post_date'];
@@ -17,7 +18,7 @@ function showPosts($query)
         $postContent = $row['post_content'];
 
         /*Include the post layout*/
-        include "includes/post.php";
+        include "includes/postsLayout.php";
     }
 
 }
@@ -29,6 +30,7 @@ function showCategories()
     $allCategories = mysqli_query($connection, $query);
     while ($row = mysqli_fetch_assoc($allCategories)) {
         $catTitle = $row['cat_title'];
-        echo "<li><a href='#'>{$catTitle}</a></li>";
+        $catId = $row['cat_id'];
+        echo "<li><a href='index.php?category=$catId'>{$catTitle}</a></li>";
     }
 }
