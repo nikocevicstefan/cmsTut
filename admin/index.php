@@ -1,5 +1,5 @@
 <?php
-    include "includes/adminHeader.php";
+include "includes/adminHeader.php";
 ?>
 
 <body>
@@ -22,15 +22,7 @@
                         Welcome to admin panel
                         <small>Subheading</small>
                     </h1>
-                    <!--                        <ol class="breadcrumb">
-                                                <li>
-                                                    <i class="fa fa-dashboard"></i>  <a href="index.html">Dashboard</a>
-                                                </li>
-                                                <li class="active">
-                                                    <i class="fa fa-file"></i> Blank Page
-                                                </li>
-                                            </ol>
-                    -->                    </div>
+                </div>
             </div>
             <!-- /.row -->
 

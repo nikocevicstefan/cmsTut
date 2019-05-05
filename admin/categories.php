@@ -3,7 +3,7 @@
 if (isset($_POST['submit'])) {
     addCategories();
 } else if (isset($_GET['delete'])) {
-    deleteCategory();
+    deleteCategory($_GET['delete']);
 } else if (isset($_POST['update'])) {
     editCategory();
 }

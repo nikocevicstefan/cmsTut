@@ -1,6 +1,5 @@
 <?php
-if(isset($_POST['createPost']))
-{
+if (isset($_POST['createPost'])) {
     createPost();
 }
 ?>
@@ -13,7 +12,17 @@ if(isset($_POST['createPost']))
     </div>
     <div class="form-group">
         <label for="postCategoryId">Post Category ID</label>
-        <input type="text" class="form-control" name="postCategoryId">
+        <select name="postCategoryId" id="">
+            <?php
+                $categories = returnCategories();
+                while($row = mysqli_fetch_assoc($categories))
+                {
+                    $catId = $row['cat_id'];
+                    $catTitle = $row['cat_title'];
+                    echo "<option value='$catId'>$catTitle</option>";
+                }
+            ?>
+        </select>
     </div>
 
     <div class="form-group">
