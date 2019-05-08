@@ -193,8 +193,6 @@ function updatePost($id)
 
     $postTags = $_POST['postTags'];
     $postContent = $_POST['postContent'];
-    $commentCountQuery = "SELECT * FROM comments WHERE comment_post_id = $id";
-    $postCommentCount = mysqli_num_rows(returnComments($commentCountQuery));
     $postDate = date('d-m-y');
 
 //    If the user doesnt choose an image to update the post the old one gets called back
@@ -208,7 +206,7 @@ function updatePost($id)
     /*moving image from the temporary location to our storage*/
     move_uploaded_file($postImageTemp, "../images/$postImage");
 
-    $query = "UPDATE posts SET post_category_id = $postCategoryId, post_title = '$postTitle', post_author = '$postAuthor', post_date = now(), post_image = '$postImage' , post_content = '$postContent', post_tags = '$postTags', post_comment_count = $postCommentCount, post_status = '$postStatus' WHERE post_id = $id";
+    $query = "UPDATE posts SET post_category_id = $postCategoryId, post_title = '$postTitle', post_author = '$postAuthor', post_date = now(), post_image = '$postImage' , post_content = '$postContent', post_tags = '$postTags', post_status = '$postStatus' WHERE post_id = $id";
 
     $result = mysqli_query($connection, $query);
     if (!$result) {
@@ -308,7 +306,7 @@ function showComments($query)
 /**
  * @param $postId
  */
-function createComment($postId)
+/*function createComment($postId)
 {
     global $connection;
     $commentPost = $postId;
@@ -323,7 +321,7 @@ function createComment($postId)
     if (!$result) {
         die("Creating Comment FAILED:" . mysqli_error($connection));
     }
-}
+}*/
 
 /**
  * @param $commentId

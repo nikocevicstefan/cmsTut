@@ -56,7 +56,7 @@ function createComment($postId)
         die("Creating Comment FAILED:". mysqli_error($connection));
     }else
         {
-            $increaseCommentCountQuery = "UPDATE posts SET post_comment_count = post_comment_count + 1";
+            $increaseCommentCountQuery = "UPDATE posts SET post_comment_count = post_comment_count + 1 WHERE post_id = $postId";
             $result = mysqli_query($connection, $query);
         }
 }
