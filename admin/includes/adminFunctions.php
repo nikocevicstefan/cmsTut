@@ -34,10 +34,9 @@ function editCategory()
     $result = mysqli_query($connection, $query);
     if (!$result) {
         die("Update failed:" . mysqli_error($connection));
-    }else
-        {
-            header("Location: categories.php");
-        }
+    } else {
+        header("Location: categories.php");
+    }
 }
 
 
@@ -104,7 +103,6 @@ function showPosts($query)
         die("Query showing posts has failed:" . mysqli_error($connection));
     }
     while ($row = mysqli_fetch_assoc($allPosts)) {
-//        $sortedRow = [$row['post_id'], $row['post_author'],$row['post_category_id'],$row['post_status'],$row['post_image'],$row['post_tags'],$row['post_comment_count'],$row['post_date']];
         $postId = $row['post_id'];
         $postAuthor = $row['post_author'];
         $postTitle = $row['post_title'];
@@ -112,16 +110,21 @@ function showPosts($query)
         $postStatus = $row['post_status'];
         $postImage = $row['post_image'];
         $postTags = $row['post_tags'];
-        $post_comment_count = $row['post_comment_count'];
         $postDate = $row['post_date'];
 
+        //Send a query to return number of comments for this post
+        $commentQuery = "SELECT * FROM comments WHERE comment_post_id = $postId";
+        $post_comment_count = mysqli_num_rows(returnComments($commentQuery));
+
+
+        //To display category title instead of id
         $postCategory = mysqli_fetch_assoc(returnCategory($postCategoryId));
         $postCategoryTitle = $postCategory['cat_title'];
 
         echo "<tr>";
         echo "<td>{$postId}</td>";
         echo "<td>{$postAuthor}</td>";
-        echo "<td>{$postTitle}</td>";
+        echo "<td><a href='../post.php?p_id=$postId'>{$postTitle}</a></td>";
         echo "<td>{$postCategoryTitle}</td>";
         echo "<td>{$postStatus}</td>";
         echo "<td><img src='../images/{$postImage}' class='img-responsive' alt='category image' style='width: 100px;'></td>";
@@ -156,7 +159,7 @@ function createPost()
     $postImageTemp = $_FILES['postImage']['tmp_name'];
 
     $postTags = $_POST['postTags'];
-    $postCommentCount = 4;
+    $postCommentCount = 0;
     $postContent = $_POST['postContent'];
     $postDate = date('d-m-y');
 
@@ -168,10 +171,9 @@ function createPost()
     $result = mysqli_query($connection, $query);
     if (!$result) {
         die("Post creation failed:" . mysqli_error($connection));
-    }else
-        {
-            header("Location: posts.php");
-        }
+    } else {
+        header("Location: posts.php");
+    }
 }
 
 /**
@@ -191,14 +193,14 @@ function updatePost($id)
 
     $postTags = $_POST['postTags'];
     $postContent = $_POST['postContent'];
+    $commentCountQuery = "SELECT * FROM comments WHERE comment_post_id = $id";
+    $postCommentCount = mysqli_num_rows(returnComments($commentCountQuery));
     $postDate = date('d-m-y');
 
 //    If the user doesnt choose an image to update the post the old one gets called back
-    if (empty($postImage))
-    {
+    if (empty($postImage)) {
         $post = returnSinglePost($id);
-        while($row = mysqli_fetch_assoc($post))
-        {
+        while ($row = mysqli_fetch_assoc($post)) {
             $postImage = $row['post_image'];
         }
     }
@@ -206,7 +208,7 @@ function updatePost($id)
     /*moving image from the temporary location to our storage*/
     move_uploaded_file($postImageTemp, "../images/$postImage");
 
-    $query = "UPDATE posts SET post_category_id = $postCategoryId, post_title = '$postTitle', post_author = '$postAuthor', post_date = now(), post_image = '$postImage' , post_content = '$postContent', post_tags = '$postTags', post_status = '$postStatus' WHERE post_id = $id";
+    $query = "UPDATE posts SET post_category_id = $postCategoryId, post_title = '$postTitle', post_author = '$postAuthor', post_date = now(), post_image = '$postImage' , post_content = '$postContent', post_tags = '$postTags', post_comment_count = $postCommentCount, post_status = '$postStatus' WHERE post_id = $id";
 
     $result = mysqli_query($connection, $query);
     if (!$result) {
@@ -248,4 +250,149 @@ function returnSinglePost($id)
     } else {
         return $result;
     }
+}
+
+//Comments CRUD
+
+/**
+ * Display all comments in an admin table
+ * @param $query
+ */
+function showComments($query)
+{
+    global $connection;
+    $result = mysqli_query($connection, $query);
+    while ($row = mysqli_fetch_assoc($result)) {
+        $commentId = $row['comment_id'];
+        $commentAuthor = $row['comment_author'];
+        $commentContent = $row['comment_content'];
+        $commentEmail = $row['comment_email'];
+        $commentStatus = $row['comment_status'];
+        $commentPostId = $row['comment_post_id'];
+        $commentDate = $row['comment_date'];
+
+        //To display comments parent post
+        $commentPost = mysqli_fetch_assoc(returnSinglePost($commentPostId));
+        $commentPostTitle = $commentPost['post_title'];
+
+        echo "<tr>";
+        echo "<td>{$commentId}</td>";
+        echo "<td>{$commentAuthor}</td>";
+        echo "<td>{$commentContent}</td>";
+        echo "<td>{$commentDate}</td>";
+        echo "<td>{$commentStatus}</td>";
+        echo "<td>{$commentEmail}</td>";
+        echo "<td> <a href='../post.php?p_id=$commentPostId'> {$commentPostTitle} </a></td>";
+        if ($commentStatus === 'approved') {
+            echo "<td>
+                     <div class='col-xs-6'>
+                        <a href='comments.php?approval=$commentId'><i class='fa fa-minus'></i></a>                    
+                     </div>
+              </td>";
+        } else {
+            echo "<td>
+                     <div class='col-xs-6'>
+                        <a href='comments.php?approval=$commentId'><i class='fa fa-plus'></i></a>                    
+                     </div>
+             </td>";
+        }
+        echo "<td>
+                     <div class='col-xs-6'>
+                        <a href='comments.php?delete=$commentId'><i class='fa fa-close'></i></a>                    
+                     </div>
+              </td>";
+        echo "</tr>";
+    }
+}
+
+/**
+ * @param $postId
+ */
+function createComment($postId)
+{
+    global $connection;
+    $commentPost = $postId;
+    $commentAuthor = $_POST['commentAuthor'];
+    $commentEmail = $_POST['commentEmail'];
+    $commentContent = $_POST['commentContent'];
+    $commentStatus = 'unapproved';
+    $commentDate = date(d - m - y);
+
+    $query = "INSERT INTO comments (comment_post_id, comment_author , comment_email, comment_content, comment_status, comment_date) VALUES ($commentPost, '$commentAuthor', '$commentEmail', '$commentContent', '$commentStatus', now())";
+    $result = mysqli_query($connection, $query);
+    if (!$result) {
+        die("Creating Comment FAILED:" . mysqli_error($connection));
+    }
+}
+
+/**
+ * @param $commentId
+ * Delete comment based on id parameter sent to the function
+ */
+function deleteComment($commentId)
+{
+    global $connection;
+
+    /*Getting comments post id
+    before deleting the comment
+    to lower the comment count for the post*/
+    $getCommentQuery = "SELECT * FROM comments WHERE comment_id = $commentId LIMIT 1";
+    $comment = mysqli_query($connection, $getCommentQuery);
+    $comment = mysqli_fetch_assoc($comment);
+    $commentPostId = $comment['comment_post_id'];
+
+    //Deleting the comment
+    $query = "DELETE FROM comments WHERE comment_id = $commentId";
+    $result = mysqli_query($connection, $query);
+    if (!$result) {
+        die("Deleting Comment FAILED:" . mysqli_error($connection));
+    } else {
+        //When deleting a comment find out the post its attached to and lower its comment count
+        $commentCounterQuery = "UPDATE posts SET post_comment_count = post_comment_count - 1 WHERE post_id = $commentPostId";
+        $commentCounterQuery = mysqli_query($connection, $commentCounterQuery);
+        header("Location: comments.php");
+    }
+}
+
+/**
+ * @param $commentId
+ * Un/approve the comment status based on its id and previous status state
+ */
+function approvingComment($commentId)
+{
+    global $connection;
+    $query = "SELECT * FROM comments WHERE comment_id = $commentId";
+    $comment = mysqli_query($connection, $query);
+    $comment = mysqli_fetch_assoc($comment);
+    $commentStatus = $comment['comment_status'];
+    if ($commentStatus === 'unnaproved') {
+        $commentStatus = 'approved';
+    } else {
+        $commentStatus = 'unnaproved';
+    }
+    $query = "UPDATE comments SET comment_status = '$commentStatus' WHERE comment_id = $commentId";
+    $result = mysqli_query($connection, $query);
+    if (!$result) {
+        die("Approval FAILED:" . mysqli_error($connection));
+    } else {
+        header("Location: comments.php");
+    }
+}
+
+/**
+ * @param $query
+ * @return bool|mysqli_result
+ *
+ * returns comments based on a query parameter sent to the function
+ */
+function returnComments($query)
+{
+    global $connection;
+    $result = mysqli_query($connection, $query);
+    if (!$result) {
+        die("Returning comments FAILED:" . mysqli_error($connection));
+    } else {
+        return $result;
+    }
+
 }
