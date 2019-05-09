@@ -35,6 +35,9 @@ if (isset($_GET['p_id'])) {
         <br>
         <select name="postStatus">
             <?php
+
+            /*Get post status from the DB and set the selected value
+            from the gathered data*/
             $postStatus = $post['post_status'];
             if ($postStatus === 'submitted') {
                 echo "<option value='$postStatus' selected>Submit</option>";

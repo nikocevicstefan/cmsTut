@@ -16,12 +16,6 @@
     <?php
     $query = "SELECT * FROM comments";
     $allComments = showComments($query);
-
-    //TODO: implent comment deletion
-    /*if (isset($_GET['delete'])) {
-        $commentId = $_GET['delete'];
-        deleteComment($commentId);
-    }
-    */?>
+    ?>
     </tbody>
 </table>
