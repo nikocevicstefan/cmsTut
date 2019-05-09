@@ -31,7 +31,7 @@ if (isset($_GET['u_id'])) {
     </div>
 
     <div class="form-group">
-        <input type="submit" value="Edit Post" class="btn btn-primary" name="updateUser">
+        <input type="submit" value="Edit User" class="btn btn-primary" name="updateUser">
     </div>
 
 </form>

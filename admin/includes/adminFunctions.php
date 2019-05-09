@@ -471,3 +471,22 @@ function deleteUser($id)
             header("Location:users.php");
         }
 }
+
+function createUser()
+{
+    global $connection;
+    $username= $_POST['username'];
+    $userFirstName= $_POST['userFirstName'];
+    $userLastName = $_POST['userLastName'];
+    $userEmail= $_POST['userEmail'];
+    $userPassword= $_POST['userPassword'];
+    $userRole= $_POST['userRole'];
+
+    $query = "INSERT INTO users(username, user_firstname, user_lastname, user_email, user_password, user_role) VALUES('$username', '$userFirstName', '$userLastName', '$userEmail', '$userPassword', '$userRole')";
+    $result = mysqli_query($connection, $query);
+    if (!$result) {
+        die("User creation failed:" . mysqli_error($connection));
+    } else {
+        header("Location: users.php");
+    }
+}
