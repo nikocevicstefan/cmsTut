@@ -42,26 +42,25 @@ include "includes/functions.php";
             if (isset($_POST['submit'])) {
                 //if search is activated
                 $search = $_POST['search'];
-                $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%'";
+                $query = "SELECT * FROM posts WHERE post_tags LIKE '%$search%' AND post_status = 'submitted'";
             } else if (isset($_GET['category'])) {
                 $catId = $_GET['category'];
-                $query = "SELECT * FROM posts WHERE post_category_id = $catId";
+                $query = "SELECT * FROM posts WHERE post_category_id = $catId  AND post_status = 'submitted'";
             } else {
                 //show all posts
-                $query = "SELECT * FROM posts";
+                $query = "SELECT * FROM posts WHERE post_status = 'submitted'";
             }
-            showPosts($query);
+
+            //if query finds no results then echo relevant info
+            //otherwise show relevant posts
+            $result = mysqli_query($connection, $query);
+            if (mysqli_num_rows($result)) {
+                showPosts($query);
+            } else {
+                echo "<h3>No posts found</h3>";
+            }
             ?>
 
-            <!-- Pager -->
-            <ul class="pager">
-                <li class="previous">
-                    <a href="#">&larr; Older</a>
-                </li>
-                <li class="next">
-                    <a href="#">Newer &rarr;</a>
-                </li>
-            </ul>
 
         </div>
 
