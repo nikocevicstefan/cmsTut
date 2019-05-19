@@ -40,7 +40,9 @@ include "includes/adminHeader.php";
                 case 'edit_user';
                     include "includes/editUser.php";
                     break;
-
+                case 'profile';
+                    include "includes/profile.php";
+                    break;
                 default:
                     include "includes/viewAllUsers.php";
                     break;

@@ -35,7 +35,9 @@
             </ul>
         </li>
         <li>
-            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+            <?php $id = $_SESSION['user_id'];
+                echo "<a href='users.php?source=profile&u_id=$id'><i class='fa fa-fw fa-user'></i> Profile</a>"
+            ?>
         </li>
     </ul>
 </div>

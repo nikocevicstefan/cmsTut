@@ -15,6 +15,21 @@
         <!-- /.input-group -->
     </div>
 
+    <div class="well">
+        <h4>Login</h4>
+        <form action="includes/login.php" method="post">
+            <div class="form-group">
+                <input type="text" name="username" class="form-control" placeholder="Your username">
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" class="form-control" placeholder="Your password">
+            </div>
+            <input class="btn btn-default" name="login" type="submit" value="Log in">
+            <a href="#"><p>Sign Up if you don't have an account</p></a>
+        </form>
+    </div>
+
+
     <!-- Blog Categories Well -->
     <div class="well">
         <h4>Categories</h4>
@@ -22,21 +37,8 @@
             <div class="col-lg-6">
                 <ul class="list-unstyled">
                     <?php
-                        showCategories();
+                    showCategories();
                     ?>
-                </ul>
-            </div>
-            <!-- /.col-lg-6 -->
-            <div class="col-lg-6">
-                <ul class="list-unstyled">
-                    <li><a href="#">Category Name</a>
-                    </li>
-                    <li><a href="#">Category Name</a>
-                    </li>
-                    <li><a href="#">Category Name</a>
-                    </li>
-                    <li><a href="#">Category Name</a>
-                    </li>
                 </ul>
             </div>
             <!-- /.col-lg-6 -->
@@ -45,6 +47,6 @@
     </div>
 
     <!-- Side Widget Well -->
-    <?php include "widget.php"?>
+    <?php include "widget.php" ?>
 
 </div>

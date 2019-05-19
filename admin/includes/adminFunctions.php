@@ -403,11 +403,11 @@ function showUsers($query)
     $result = mysqli_query($connection, $query);
     while ($row = mysqli_fetch_assoc($result)) {
         $userId = $row['user_id'];
-        $username= $row['username'];
-        $userFirstName= $row['user_firstname'];
+        $username = $row['username'];
+        $userFirstName = $row['user_firstname'];
         $userLastName = $row['user_lastname'];
-        $userEmail= $row['user_email'];
-        $userRole= $row['user_role'];
+        $userEmail = $row['user_email'];
+        $userRole = $row['user_role'];
 
         echo "<tr>";
         echo "<td>{$userId}</td>";
@@ -441,19 +441,23 @@ function returnSingleUser($id)
 function updateUser($id)
 {
     global $connection;
-    $username= $_POST['username'];
-    $userFirstName= $_POST['userFirstname'];
-    $userLastName = $_POST['userLastname'];
-    $userEmail= $_POST['userEmail'];
-    $userRole= $_POST['userRole'];
+    $username = $_POST['username'];
+    $userFirstName = $_POST['userFirstName'];
+    $userLastName = $_POST['userLastName'];
+    $userEmail = $_POST['userEmail'];
+    $userRole = $_POST['userRole'];
 
     $query = "UPDATE users SET username = '$username', user_firstname = '$userFirstName', user_lastname = '$userLastName', user_email = '$userEmail' , user_role = '$userRole' WHERE user_id = $id";
-
     $result = mysqli_query($connection, $query);
     if (!$result) {
         die("User update failed:" . mysqli_error($connection));
     } else {
-        header("Location: users.php");
+        //if the user is admin then return to all users view, if he's not return to home page
+        if ($_SESSION['user_role'] == 'admin') {
+            header("Location: users.php");
+        } else {
+            header("Location: index.php");
+        }
     }
 }
 
@@ -463,24 +467,22 @@ function deleteUser($id)
     $query = "DELETE FROM users WHERE user_id = $id";
 
     $result = mysqli_query($connection, $query);
-    if(!$result)
-    {
-        die("Deleting User FAILED:".mysqli_error($connection));
-    }else
-        {
-            header("Location:users.php");
-        }
+    if (!$result) {
+        die("Deleting User FAILED:" . mysqli_error($connection));
+    } else {
+        header("Location:users.php");
+    }
 }
 
 function createUser()
 {
     global $connection;
-    $username= $_POST['username'];
-    $userFirstName= $_POST['userFirstName'];
+    $username = $_POST['username'];
+    $userFirstName = $_POST['userFirstName'];
     $userLastName = $_POST['userLastName'];
-    $userEmail= $_POST['userEmail'];
-    $userPassword= $_POST['userPassword'];
-    $userRole= $_POST['userRole'];
+    $userEmail = $_POST['userEmail'];
+    $userPassword = $_POST['userPassword'];
+    $userRole = $_POST['userRole'];
 
     $query = "INSERT INTO users(username, user_firstname, user_lastname, user_email, user_password, user_role) VALUES('$username', '$userFirstName', '$userLastName', '$userEmail', '$userPassword', '$userRole')";
     $result = mysqli_query($connection, $query);
