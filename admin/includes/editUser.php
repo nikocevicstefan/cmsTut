@@ -27,7 +27,18 @@ if (isset($_GET['u_id'])) {
     </div>
     <div class="form-group">
         <label for="userRole">Role:</label>
-        <input type="text" class="form-control" name="userRole" value="<?php echo $user['user_role'] ?>">
+        <select name="userRole">
+            <?php
+            if ($user['user_role'] === 'admin') {
+                echo "<option value='admin' selected>Admin</option>";
+                echo "<option value='subscriber' >Subscriber</option>";
+            } else {
+                echo "<option value='admin'>Admin</option>";
+                echo "<option value='subscriber' selected>Subscriber</option>";
+            }
+            ?>
+        </select>
+
     </div>
 
     <div class="form-group">

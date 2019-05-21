@@ -14,7 +14,7 @@ if (isset($_POST['createPost'])) {
         <label for="postCategoryId">Post Category ID</label>
         <select name="postCategoryId" id="">
             <?php
-                $categories = returnCategories();
+                $categories = returnAllCategories();
                 while($row = mysqli_fetch_assoc($categories))
                 {
                     $catId = $row['cat_id'];

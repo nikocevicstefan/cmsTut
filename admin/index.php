@@ -20,7 +20,7 @@ include "includes/adminHeader.php";
                 <div class="col-lg-12">
                     <h1 class="page-header">
                         Welcome to admin panel
-                        <small><?php echo $_SESSION['username']?></small>
+                        <small><?php echo $_SESSION['username'] ?></small>
                     </h1>
                 </div>
             </div>
@@ -28,10 +28,10 @@ include "includes/adminHeader.php";
 
             <!-- /.row -->
             <?php
-                $postsNumber = mysqli_num_rows(returnAllPosts());
-                $commentsNumber = mysqli_num_rows(returnAllComments());
-                $usersNumber = mysqli_num_rows(returnAllUsers());
-                $categoriesNumber = mysqli_num_rows(returnAllCategories());
+            $postsNumber = mysqli_num_rows(returnAllPosts());
+            $commentsNumber = mysqli_num_rows(returnAllComments());
+            $usersNumber = mysqli_num_rows(returnAllUsers());
+            $categoriesNumber = mysqli_num_rows(returnAllCategories());
             ?>
             <div class="row">
                 <div class="col-lg-3 col-md-6">
@@ -42,7 +42,7 @@ include "includes/adminHeader.php";
                                     <i class="fa fa-file-text fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class='huge'><?php echo $postsNumber?></div>
+                                    <div class='huge'><?php echo $postsNumber ?></div>
                                     <div>Posts</div>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@ include "includes/adminHeader.php";
                                     <i class="fa fa-comments fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class='huge'><?php echo $commentsNumber?></div>
+                                    <div class='huge'><?php echo $commentsNumber ?></div>
                                     <div>Comments</div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@ include "includes/adminHeader.php";
                                     <i class="fa fa-user fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class='huge'><?php echo $usersNumber?></div>
+                                    <div class='huge'><?php echo $usersNumber ?></div>
                                     <div> Users</div>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@ include "includes/adminHeader.php";
                                     <i class="fa fa-list fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class='huge'><?php echo $categoriesNumber?></div>
+                                    <div class='huge'><?php echo $categoriesNumber ?></div>
                                     <div>Categories</div>
                                 </div>
                             </div>
@@ -124,7 +124,37 @@ include "includes/adminHeader.php";
                 </div>
             </div>
             <!-- /.row -->
+            <div class="row">
+                <script type="text/javascript">
+                    google.charts.load('current', {'packages': ['bar']});
+                    google.charts.setOnLoadCallback(drawChart);
 
+                    function drawChart() {
+                        var data = google.visualization.arrayToDataTable([
+                            ['Data', 'Count'],
+                            <?php
+                            echo "['Posts', $postsNumber], 
+                                  ['Comments', $commentsNumber], 
+                                  ['Users', $usersNumber],
+                                  ['Categories', $categoriesNumber]";
+                            ?>
+                        ]);
+
+                        var options = {
+                            chart: {
+                                title: '',
+                                subtitle: '',
+                            }
+                        };
+
+                        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+                        chart.draw(data, google.charts.Bar.convertOptions(options));
+                    }
+                </script>
+                <div id="columnchart_material" style="width: auto; height: 500px;"></div>
+
+            </div>
         </div>
         <!-- /.container-fluid -->
 
