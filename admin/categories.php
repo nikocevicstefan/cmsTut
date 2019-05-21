@@ -55,7 +55,7 @@ if (isset($_POST['submit'])) {
                             </thead>
                             <tbody>
                             <?php
-                            $allCategories = returnCategories();
+                            $allCategories = returnAllCategories();
                             while ($row = mysqli_fetch_assoc($allCategories)) {
                                 $catId = $row['cat_id'];
                                 $catTitle = $row['cat_title'];

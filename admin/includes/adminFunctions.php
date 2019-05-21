@@ -77,7 +77,7 @@ function returnCategory($id)
  * @return bool|mysqli_result
  * returns all categories
  */
-function returnCategories()
+function returnAllCategories()
 {
     global $connection;
     $query = "SELECT * FROM categories";
@@ -90,6 +90,19 @@ function returnCategories()
 }
 
 /*Posts functions*/
+
+
+function returnAllPosts()
+{
+    global $connection;
+    $query = "SELECT * FROM posts";
+    $result = mysqli_query($connection, $query);
+    if (!$result) {
+        die("Posts not found:" . mysqli_error($connection));
+    } else {
+        return $result;
+    }
+}
 
 /**
  * @param $query
@@ -252,6 +265,18 @@ function returnSinglePost($id)
 
 //Comments CRUD
 
+function returnAllComments()
+{
+    global $connection;
+    $query = "SELECT * FROM comments";
+    $result = mysqli_query($connection, $query);
+    if(!$result){
+        die("No comments returned:".mysqli_error());
+    }else{
+        return $result;
+    }
+}
+
 /**
  * Display all comments in an admin table
  * @param $query
@@ -396,6 +421,19 @@ function returnComments($query)
 }
 
 //USER FUNCTIONS
+
+function returnAllUsers()
+{
+    global $connection;
+    $query = "SELECT * FROM users";
+    $result = mysqli_query($connection, $query);
+    if(!$result)
+    {
+        die("No users returned:". mysqli_error($connection));
+    }else{
+        return $result;
+    }
+}
 
 function showUsers($query)
 {
