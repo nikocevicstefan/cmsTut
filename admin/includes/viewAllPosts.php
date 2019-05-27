@@ -22,6 +22,8 @@ if (isset($_POST['checkboxArray'])) {
 }
 ?>
 
+
+
 <form action="" method="post">
     <table class="table table-hover table-bordered">
 
@@ -39,7 +41,7 @@ if (isset($_POST['checkboxArray'])) {
         </div>
         <thead>
             <tr>
-                <th><input type="checkbox" id="selectAllBoxes"></th>
+                <th><input type="checkbox" id="selectAllBoxes" onclick="toggleCheckboxes(this);"></th>
                 <th>ID</th>
                 <th>Title</th>
                 <th>Author</th>

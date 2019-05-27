@@ -19,6 +19,8 @@ include "includes/functions.php";
                 Page Heading
                 <small>Secondary Text</small>
             </h1>
+
+
             <?php
             if (isset($_POST['submit'])) {
                 //if search is activated
@@ -58,7 +60,8 @@ include "includes/functions.php";
 <!-- /.container -->
 
 <!-- jQuery -->
-<script src="js/jquery.js"></script>
+<script src="js/jquery.js" type="text/javascript"></script>
+<script src="admin/js/scripts.js" type="text/javascript"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>

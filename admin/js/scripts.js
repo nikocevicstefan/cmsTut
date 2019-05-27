@@ -1,14 +1,7 @@
-$(document).ready(function () {
-
-    $('#selectAllBoxes').on('click', function () {
-        if (this.checked) {
-            $('.checkboxes').each(function () {
-                this.checked = true;
-            });
-        } else {
-            $('.checkboxes').each(function () {
-                this.checked = false;
-            });
-        }
-    });
-});
+function toggleCheckboxes(source) {
+    var checkboxes = document.getElementsByClassName('checkboxes');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source)
+            checkboxes[i].checked = source.checked;
+    }
+}
