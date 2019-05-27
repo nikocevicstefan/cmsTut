@@ -47,9 +47,14 @@ if (isset($_POST['createPost'])) {
     </div>
     <div class="form-group">
         <label for="postContent">Post Content</label>
-        <textarea class="form-control" name="postContent" id="" cols="30" rows="10">
-
-        </textarea>
+        <textarea class="form-control" name="postContent" id="editor" cols="30" rows="10"></textarea>
+        <script>
+            ClassicEditor
+                .create( document.querySelector( '#editor' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+        </script>
     </div>
     <div class="form-group">
         <input type="submit" value="Publish Post" class="btn btn-primary" name="createPost">

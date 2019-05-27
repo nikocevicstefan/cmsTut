@@ -135,6 +135,7 @@ function showPosts($query)
         $postCategoryTitle = $postCategory['cat_title'];
 
         echo "<tr>";
+        echo "<td><input type='checkbox' class='checkboxes' name='checkboxArray[]' value=$postId></td>";
         echo "<td>{$postId}</td>";
         echo "<td>{$postAuthor}</td>";
         echo "<td><a href='../post.php?p_id=$postId'>{$postTitle}</a></td>";

@@ -7,6 +7,20 @@ if (isset($_GET['p_id'])) {
     }
 }
 ?>
+
+
+<script type="text/javascript">
+    ClassicEditor
+        .create( document.querySelector( '#editor' ) )
+        .then( editor => {
+            console.log( editor );
+        } )
+        .catch( error => {
+            console.error( error );
+        } );
+
+</script>
+
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="postTitle">Post Title</label>
@@ -16,7 +30,7 @@ if (isset($_GET['p_id'])) {
         <label for="postCategoryId">Post Category</label>
         <select name="postCategoryId" id="">
             <?php
-            $categories = returnCategories();
+            $categories = returnAllCategories();
             while ($row = mysqli_fetch_assoc($categories)) {
                 $catId = $row['cat_id'];
                 $catTitle = $row['cat_title'];
@@ -60,8 +74,15 @@ if (isset($_GET['p_id'])) {
     </div>
     <div class="form-group">
         <label for="postContent">Post Content</label>
-        <textarea class="form-control" name="postContent" id="" cols="30"
-                  rows="10"><?php echo $post['post_content'] ?></textarea>
+        <textarea class="form-control" name="postContent" id="editor" cols="30" rows="10"><?php echo $post['post_content'] ?></textarea>
+        <script>
+            ClassicEditor
+                .create( document.querySelector( '#editor' ) )
+                .catch( error => {
+                    console.error( error );
+                } );
+
+        </script>
     </div>
     <div class="form-group">
         <input type="submit" value="Edit Post" class="btn btn-primary" name="updatePost">
