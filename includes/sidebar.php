@@ -25,7 +25,7 @@
                 <input type="password" name="password" class="form-control" placeholder="Your password">
             </div>
             <input class="btn btn-default" name="login" type="submit" value="Log in">
-            <a href="#"><p>Sign Up if you don't have an account</p></a>
+            <a href="registration.php"><p>Sign Up if you don't have an account</p></a>
         </form>
     </div>
 

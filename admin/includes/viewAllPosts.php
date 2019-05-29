@@ -43,8 +43,8 @@ if (isset($_POST['checkboxArray'])) {
             <tr>
                 <th><input type="checkbox" id="selectAllBoxes" onclick="toggleCheckboxes(this);"></th>
                 <th>ID</th>
-                <th>Title</th>
                 <th>Author</th>
+                <th>Title</th>
                 <th>Category</th>
                 <th>Status</th>
                 <th>Image</th>

@@ -4,7 +4,13 @@ include "includes/db.php";
 include "includes/functions.php";
 
 if (isset($_POST['submitComment'])) {
-    createComment($_GET['p_id']);
+    if (!empty($_POST['commentContent']) && !empty($_POST['commentAuthor']) && !empty($_POST['commentEmail'])) {
+        createComment($_GET['p_id']);
+    } else {
+        echo "<script>
+                alert('Fields cannot be empty');
+             </script>";
+    }
 }
 ?>
 
@@ -42,15 +48,15 @@ if (isset($_POST['submitComment'])) {
                 <form role="form" method="post">
 
                     <div class="form-group">
-                        <textarea class="form-control" rows="3" name="commentContent"></textarea>
+                        <textarea class="form-control" rows="3" name="commentContent" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="commentAuthor">Your Name:</label>
-                        <input type="text" class="form-control" name="commentAuthor">
+                        <input type="text" class="form-control" name="commentAuthor" required>
                     </div>
                     <div class="form-group">
                         <label for="commentEmail">Your email:</label>
-                        <input type="text" class="form-control" name="commentEmail">
+                        <input type="text" class="form-control" name="commentEmail" required>
                     </div>
                     <button type="submit" class="btn btn-primary" name="submitComment">Submit</button>
                 </form>

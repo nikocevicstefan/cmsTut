@@ -25,6 +25,9 @@ if (isset($_POST['login'])) {
         $dbUserRole = $row['user_role'];
     }
 
+    //reverse password salt - decrypt
+    $password = crypt($password, $dbUserPassword);
+
     if ($username === $dbUsername && $password === $dbUserPassword) {
         $_SESSION['user_id'] = $dbUserId;
         $_SESSION['username'] = $dbUsername;

@@ -17,7 +17,7 @@
             <ul class="nav navbar-nav">
 
                 <?php
-                showCategories();
+                    showCategories();
                 ?>
                 <li>
                     <a href="admin">Admin</a>
