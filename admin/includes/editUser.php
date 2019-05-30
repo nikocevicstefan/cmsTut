@@ -9,7 +9,7 @@ if (isset($_GET['u_id'])) {
 ?>
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="postTitle">Username</label>
+        <label for="username">Username</label>
         <input type="text" class="form-control" name="username" value="<?php echo $user['username'] ?>">
     </div>
 
@@ -23,7 +23,11 @@ if (isset($_GET['u_id'])) {
     </div>
     <div class="form-group">
         <label for="userEmail">Email:</label>
-        <input type="text" class="form-control" name="userEmail" value="<?php echo $user['user_email'] ?>">
+        <input type="email" class="form-control" name="userEmail" value="<?php echo $user['user_email'] ?>">
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" name="userPassword" value="<?php echo $user['user_password'] ?>">
     </div>
     <div class="form-group">
         <label for="userRole">Role:</label>

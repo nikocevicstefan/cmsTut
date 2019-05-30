@@ -6,10 +6,9 @@ if (isset($_POST['createUser'])) {
 
 <form action="" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="postTitle">Username</label>
+        <label for="username">Username</label>
         <input type="text" class="form-control" name="username" >
     </div>
-
     <div class="form-group">
         <label for="userFirstName">First Name:</label>
         <input type="text" class="form-control" name="userFirstName" >

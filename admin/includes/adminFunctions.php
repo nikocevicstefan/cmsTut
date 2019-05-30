@@ -149,8 +149,8 @@ function showPosts($query)
                      <div class='col-xs-6'>
                         <a href='posts.php?source=edit_post&p_id=$postId'><i class='fa fa-edit'></i></a>                    
                      </div>
-                     <div class='col-xs-6'> 
-                        <a href='posts.php?delete=$postId'><i class='fa fa-close'></i></a>
+                     <div class='col-xs-6'>  
+                        <a onclick='javascript: return confirm(\"Are you sure?\");' href='posts.php?delete=$postId'><i class='fa fa-close'></i></a>
                      </div>
               </td>";
         echo "</tr>";
@@ -271,9 +271,9 @@ function returnAllComments()
     global $connection;
     $query = "SELECT * FROM comments";
     $result = mysqli_query($connection, $query);
-    if(!$result){
-        die("No comments returned:".mysqli_error());
-    }else{
+    if (!$result) {
+        die("No comments returned:" . mysqli_error());
+    } else {
         return $result;
     }
 }
@@ -428,10 +428,9 @@ function returnAllUsers()
     global $connection;
     $query = "SELECT * FROM users";
     $result = mysqli_query($connection, $query);
-    if(!$result)
-    {
-        die("No users returned:". mysqli_error($connection));
-    }else{
+    if (!$result) {
+        die("No users returned:" . mysqli_error($connection));
+    } else {
         return $result;
     }
 }
@@ -484,9 +483,20 @@ function updateUser($id)
     $userFirstName = $_POST['userFirstName'];
     $userLastName = $_POST['userLastName'];
     $userEmail = $_POST['userEmail'];
+    $userPassword = $_POST['userPassword'];
+
+    $query = "SELECT randSalt FROM users";
+    $saltResult = mysqli_query($connection, $query);
+    if (!$saltResult) {
+        die("SALT QUERY FAILED" . mysqli_error($connection));
+    }
+    $row = mysqli_fetch_row($saltResult);
+    $salt = $row['randSalt'];
+    $userPassword = crypt($userPassword, $salt);
+
     $userRole = $_POST['userRole'];
 
-    $query = "UPDATE users SET username = '$username', user_firstname = '$userFirstName', user_lastname = '$userLastName', user_email = '$userEmail' , user_role = '$userRole' WHERE user_id = $id";
+    $query = "UPDATE users SET username = '$username', user_firstname = '$userFirstName', user_lastname = '$userLastName', user_email = '$userEmail',user_password='$userPassword' , user_role = '$userRole' WHERE user_id = $id";
     $result = mysqli_query($connection, $query);
     if (!$result) {
         die("User update failed:" . mysqli_error($connection));
@@ -520,7 +530,17 @@ function createUser()
     $userFirstName = $_POST['userFirstName'];
     $userLastName = $_POST['userLastName'];
     $userEmail = $_POST['userEmail'];
+    //encrypt password
     $userPassword = $_POST['userPassword'];
+    $query = "SELECT randSalt FROM users";
+    $selectRandSaltQuery = mysqli_query($connection, $query);
+    if (!$selectRandSaltQuery) {
+        die("SALT QUERY FAILED:" . mysqli_error($connection));
+    }
+    $row = mysqli_fetch_assoc($selectRandSaltQuery);
+    $salt = $row['randSalt'];
+    $userPassword = crypt($userPassword, $salt);
+
     $userRole = $_POST['userRole'];
 
     $query = "INSERT INTO users(username, user_firstname, user_lastname, user_email, user_password, user_role) VALUES('$username', '$userFirstName', '$userLastName', '$userEmail', '$userPassword', '$userRole')";
