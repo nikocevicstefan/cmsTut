@@ -15,6 +15,26 @@ if (isset($_POST['checkboxArray'])) {
                 $query = "DELETE FROM posts WHERE post_id = $checkboxValue";
                 mysqli_query($connection, $query);
                 break;
+            case 'clone':
+                $query = "SELECT * FROM posts WHERE post_id = $checkboxValue";
+                $post = mysqli_query($connection, $query);
+                $postData = mysqli_fetch_assoc($post);
+
+                $postCategoryId = $postData['post_category_id'];
+                $postTitle = $postData['post_title'];
+                $postAuthor = $postData['post_author'];
+                $postDate = $postData['post_date'];
+                $postImage = $postData['post_image'];
+                $postContent = $postData['post_content'];
+                $postTags = $postData['post_tags'];
+                $postStatus = $postData['post_status'];
+
+                $cloneQuery = "INSERT INTO posts(post_category_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_status) VALUES ($postCategoryId, '$postTitle', '$postAuthor', '$postDate', '$postImage', '$postContent', '$postTags', '$postStatus')";
+                $cloneQueryResult = mysqli_query($connection, $cloneQuery);
+                if(!$cloneQuery){
+                    die("Cloning FAILED:". mysqli_error($connection));
+                }
+                break;
             default:
                 break;
         }
@@ -33,6 +53,7 @@ if (isset($_POST['checkboxArray'])) {
                 <option value="submitted">Submit</option>
                 <option value="draft">Draft</option>
                 <option value="delete">Delete</option>
+                <option value="clone">Clone</option>
             </select>
         </div>
         <div class="col-xs-4">
@@ -56,7 +77,7 @@ if (isset($_POST['checkboxArray'])) {
         </thead>
         <tbody>
             <?php
-        $query = "SELECT * FROM posts";
+        $query = "SELECT * FROM posts ORDER BY post_id DESC";
         $allPost = showPosts($query);
 
         if (isset($_GET['delete'])) {

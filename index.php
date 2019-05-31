@@ -29,9 +29,12 @@ include "includes/functions.php";
             } else if (isset($_GET['category'])) {
                 $catId = $_GET['category'];
                 $query = "SELECT * FROM posts WHERE post_category_id = $catId  AND post_status = 'submitted'";
+            } else if(isset($_GET['author'])){
+                $author = $_GET['author'];
+                $query = "SELECT * FROM posts WHERE post_author = '$author' AND post_status = 'submitted'";
             } else {
                 //show all posts
-                $query = "SELECT * FROM posts WHERE post_status = 'submitted'";
+                $query = "SELECT * FROM posts WHERE post_status = 'submitted' ORDER BY post_id DESC ";
             }
 
             //if query finds no results then echo relevant info
@@ -61,7 +64,7 @@ include "includes/functions.php";
 
 <!-- jQuery -->
 <script src="js/jquery.js" type="text/javascript"></script>
-<script src="admin/js/scripts.js" type="text/javascript"></script>
+<script src="js/scripts.js" type="text/javascript"></script>
 
 <!-- Bootstrap Core JavaScript -->
 <script src="js/bootstrap.min.js"></script>
