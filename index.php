@@ -22,6 +22,14 @@ include "includes/functions.php";
 
 
             <?php
+            //number of posts
+            $count = mysqli_num_rows(returnAllPosts());
+            //number of pages with 5 posts each
+            $pagePosts = 5;
+            $pageNum = 1;
+            $pageCount = ceil($count / $pagePosts);
+
+
             if (isset($_POST['submit'])) {
                 //if search is activated
                 $search = $_POST['search'];
@@ -29,12 +37,16 @@ include "includes/functions.php";
             } else if (isset($_GET['category'])) {
                 $catId = $_GET['category'];
                 $query = "SELECT * FROM posts WHERE post_category_id = $catId  AND post_status = 'submitted'";
-            } else if(isset($_GET['author'])){
+            } else if (isset($_GET['author'])) {
                 $author = $_GET['author'];
                 $query = "SELECT * FROM posts WHERE post_author = '$author' AND post_status = 'submitted'";
+            } else if (isset($_GET['page'])) {
+                $pageNum = $_GET['page'];
+                $postsIndex = $pageNum - 1;
+                $query = "SELECT * FROM posts WHERE post_status = 'submitted' ORDER BY post_id DESC LIMIT $postsIndex, $pagePosts";
             } else {
                 //show all posts
-                $query = "SELECT * FROM posts WHERE post_status = 'submitted' ORDER BY post_id DESC ";
+                $query = "SELECT * FROM posts WHERE post_status = 'submitted' ORDER BY post_id DESC LIMIT $pagePosts";
             }
 
             //if query finds no results then echo relevant info
@@ -54,6 +66,18 @@ include "includes/functions.php";
         <?php include "includes/sidebar.php"; ?>
     </div>
     <!-- /.row -->
+
+    <ul class="pagination">
+        <?php
+        for ($i = 1; $i <= $pageCount; $i++) {
+            if ($i == $pageNum) {
+                echo "<li class='page-item'><a class='active_link' href='index.php?page=$i'>$i</a></li>";
+            } else {
+                echo "<li class='page-item'><a href='index.php?page=$i'>$i</a></li>";
+            }
+        }
+        ?>
+    </ul>
 
     <hr>
     <!--    include the footer-->

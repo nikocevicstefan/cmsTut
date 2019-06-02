@@ -27,6 +27,18 @@ function showPosts($query)
 
 }
 
+function returnAllPosts()
+{
+    global $connection;
+    $query = "SELECT * FROM posts";
+    $result = mysqli_query($connection, $query);
+    if (!$result) {
+        die("Posts not found:" . mysqli_error($connection));
+    } else {
+        return $result;
+    }
+}
+
 function showCategories()
 {
     global $connection;
