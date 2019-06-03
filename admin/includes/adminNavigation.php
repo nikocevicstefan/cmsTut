@@ -12,16 +12,16 @@
     </div>
     <!-- Top Menu Items -->
     <ul class="nav navbar-right top-nav">
-        <li>
-            <a href="../index.php"><i class="fa fa-home"></i> </a>
-
-
+        <li><a href="#">Users online: <?php echo usersOnline();?></a></li>
+        <li><a href="../index.php"><i class="fa fa-home"></i> </a></li>
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?php echo $_SESSION['username']?><b
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                        class="fa fa-user"></i> <?php echo $_SESSION['username'] ?><b
                         class="caret"></b></a>
             <ul class="dropdown-menu">
                 <li>
-                    <a href="users.php?source=profile&u_id=<?php echo $_SESSION['user_id']?>"><i class="fa fa-fw fa-user"></i> Profile</a>
+                    <a href="users.php?source=profile&u_id=<?php echo $_SESSION['user_id'] ?>"><i
+                                class="fa fa-fw fa-user"></i> Profile</a>
                 </li>
                 <li class="divider"></li>
                 <li>
